@@ -1,3 +1,13 @@
+# Redis as Caching Server
+
+Build and run according to the quickstart guide below. To avoid port conlficts, **use port 6380**
+
+```
+redis-server --port 6380
+```
+
+# Official Redis Quickstart
+
 This README is just a fast *quick start* document. You can find more detailed documentation at [redis.io](https://redis.io).
 
 What is Redis?
