@@ -48,7 +48,6 @@ public class Main {
                 // generate a random pid for the current image
                 String tmpPid = String.valueOf(System.currentTimeMillis());
 
-
                 //sb.append("sucessful upload! Pid: ").append(tmpPid);
 
                 // query for writable logical volumes
@@ -61,7 +60,8 @@ public class Main {
                 }
 
                 // insert the photo path into directory
-                // cache url is hardcode now
+                // cache url is hardcode now: should be the ip of cache server
+                // should also uplad binary photo object
                 String insertQuery = "INSERT INTO photo (pid, cache_url, mid, lvid) VALUES (?, '127.0.0.1:8080', ?, ?);";
                 for (String[] s : storeList) {
                     ResultSet r = session.execute(insertQuery, tmpPid, s[1], s[0]);
@@ -88,23 +88,32 @@ public class Main {
                 return pid + tmpUrl;
             } else {
                 // if not hit, first query to the directory
-                String filePath = "";
+                String resPid = "";
+                String resCacheUrl = "";
+                String resMid = "";
+                String resLvid = "";
+
                 String query = "SELECT * FROM photo WHERE pid='" + pid + "'";
                 ResultSet results = session.execute(query);
+                if (results == null) return "no results";
                 for (Row row : results) {
-                    filePath = row.getString("photoPath");
+                    // get the result
+                    resPid = row.getString("photoPath");
+                    resCacheUrl = row.getString("cache_url");
+                    resMid = row.getString("mid");
+                    resLvid = row.getString("lvid");
                 }
 
+                if (resPid.equals("") || resCacheUrl.equals("") || resMid.equals("") || resLvid.equals("")) {
+                    return "no results";
+                }
+
+                String resPath = "http://" + resCacheUrl + "/get?" + "mid=" + resMid + "&lvid=" + resLvid + "&pid=" + resPid;
                 // update the redis
-                jedisClient.set(pid, filePath);
+                jedisClient.set(pid, resPath);
                 System.out.println("Cache updated");
-                return pid + filePath;
+                return resPath;
             }
-
-
-
-            // if not hit
-            // add this pid to redis
         });
 
 
