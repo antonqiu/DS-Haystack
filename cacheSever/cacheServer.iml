@@ -8,6 +8,9 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
+    <content url="file://$MODULE_DIR$/../config">
+      <sourceFolder url="file://$MODULE_DIR$/../config" type="java-resource" />
+    </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: org.rapidoid:rapidoid-http-server:5.5.4" level="project" />

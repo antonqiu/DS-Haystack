@@ -1,0 +1,16 @@
+object_store_addresses:
+  - unix7.andrew.cmu.edu
+  - unix8.andrew.cmu.edu
+
+# Only changing the port for cassandra is not enough.
+# port in cassandra.yaml has to be changed as well.
+object_store_port: 9043
+
+num_logical_volumes: 2
+
+# This number should be less or equal to the number of object store addresses
+store_replication_factor: 2
+
+object_cache_addresses:
+  - unix5.andrew.cmu.edu
+  - unix6.andrew.cmu.edu

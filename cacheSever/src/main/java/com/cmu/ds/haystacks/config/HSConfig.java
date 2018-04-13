@@ -6,10 +6,34 @@ public class HSConfig {
 
   @JsonProperty("object_store_addresses")
   private String[] objectStoreAddresses;
+
   @JsonProperty("object_store_port")
   private int objectStorePort;
+
   @JsonProperty("object_cache_addresses")
   private String[] objectCacheAddresses;
+
+  @JsonProperty("num_logical_volumes")
+  private int numLogicalVolumes;
+
+  @JsonProperty("store_replication_factor")
+  private int storeReplicationFactor;
+
+  public int getStoreReplicationFactor() {
+    return storeReplicationFactor;
+  }
+
+  public void setStoreReplicationFactor(int storeReplicationFactor) {
+    this.storeReplicationFactor = storeReplicationFactor;
+  }
+
+  public int getNumLogicalVolumes() {
+    return numLogicalVolumes;
+  }
+
+  public void setNumLogicalVolumes(int numLogicalVolumes) {
+    this.numLogicalVolumes = numLogicalVolumes;
+  }
 
   public String[] getObjectStoreAddresses() {
     return objectStoreAddresses;
