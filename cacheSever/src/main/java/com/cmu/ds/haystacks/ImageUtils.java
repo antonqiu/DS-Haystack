@@ -1,4 +1,4 @@
-package test;
+package com.cmu.ds.haystacks;
 
 import java.io.IOException;
 
