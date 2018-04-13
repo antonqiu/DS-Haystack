@@ -1,19 +1,14 @@
 package com.cmu.ds.haystacks;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.rapidoid.config.Conf;
-import org.rapidoid.io.Upload;
-import org.rapidoid.setup.App;
-import org.rapidoid.setup.On;
-
+import com.cmu.ds.haystacks.config.HSConfig;
+import com.cmu.ds.haystacks.config.HSConfigParser;
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
-
+import org.rapidoid.config.Conf;
+import org.rapidoid.setup.App;
+import org.rapidoid.setup.On;
 import redis.clients.jedis.Jedis;
 
 
@@ -23,6 +18,9 @@ public class Main {
 
 
     public static void main(String[] args) throws Exception {
+        // parse haystack configuration
+        HSConfig config = HSConfigParser.parse("../config/config.yaml");
+
         App.run(args);
         Conf.HTTP.set("maxPipeline", 128);
         Conf.HTTP.set("timeout", 0);
@@ -33,8 +31,13 @@ public class Main {
         System.out.println("Connection to redis server");
 
         // connnect to the cassandra
-        // TODO: hard code or not? it is a question
-        cluster = Cluster.builder().addContactPoint("127.0.0.1").build(); // just for test, it should be changed to the ip of directory server
+        String[] contactPoints = config.getObjectStoreAddresses();
+        int storePort = config.getObjectStorePort();
+        cluster = Cluster.builder()
+            .withClusterName("haystack_stores")
+            .addContactPoints(contactPoints)
+            .withPort(storePort)
+            .build(); // just for test, it should be changed to the ip of directory server
         session = cluster.connect("store"); // connect to the directory keyspace
 
         // Second: get: http://<dns>/get?mid=<mid>&lvid=<lvid>?pid=<pid>
