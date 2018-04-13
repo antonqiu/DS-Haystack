@@ -13,13 +13,14 @@ import redis.clients.jedis.Jedis;
 
 
 public class Main {
+    private static HSConfig config;
     private static Cluster cluster;
     private static Session session;
 
 
     public static void main(String[] args) throws Exception {
         // parse haystack configuration
-        HSConfig config = HSConfigParser.parse("../config/config.yaml");
+        config = HSConfigParser.parse("../config/config.yaml");
 
         App.run(args);
         Conf.HTTP.set("maxPipeline", 128);
@@ -33,12 +34,18 @@ public class Main {
         // connnect to the cassandra
         String[] contactPoints = config.getObjectStoreAddresses();
         int storePort = config.getObjectStorePort();
+        int storeNumberLogicalVolumes = config.getNumLogicalVolumes();
+        int storeReplicationFactor = config.getStoreReplicationFactor();
+
         cluster = Cluster.builder()
             .withClusterName("haystack_stores")
             .addContactPoints(contactPoints)
             .withPort(storePort)
             .build(); // just for test, it should be changed to the ip of directory server
-        session = cluster.connect("store"); // connect to the directory keyspace
+        session = cluster.connect();
+
+        // init cassandra with store schema
+        initCassandraStores(session, storeReplicationFactor, storeNumberLogicalVolumes);
 
         // Second: get: http://<dns>/get?mid=<mid>&lvid=<lvid>?pid=<pid>
         On.get("/get").managed(false).cacheTTL(6000).plain((req) -> {
@@ -50,7 +57,7 @@ public class Main {
                 return "error";
             }
 
-            // first ask the redis to get the info
+            // first ask redis to get the info
             // redis store the image as string
             String imageString = jedisClient.get(pid);
             if (imageString != null) {
@@ -105,6 +112,38 @@ public class Main {
             }
         });
 
+    }
+
+    private static void initCassandraStores(Session session, int storeReplicationFactor,
+        int numLogicalVolumes) {
+        createKeyspaceIfNotExist(session, "store", "SimpleStrategy", storeReplicationFactor);
+        for (int i = numLogicalVolumes; i > 0; i--) {
+            createLogicalVolumeIfNotExist(session, "lv" + i);
+        }
+        session.execute("USE store");
+    }
+
+    private static void createKeyspaceIfNotExist(Session session,
+        String keyspaceName, String replicationStrategy, int replicationFactor) {
+        StringBuilder sb =
+            new StringBuilder("CREATE KEYSPACE IF NOT EXISTS ")
+                .append(keyspaceName).append(" WITH replication = {")
+                .append("'class':'").append(replicationStrategy)
+                .append("','replication_factor':").append(replicationFactor)
+                .append("};");
+
+        String query = sb.toString();
+        session.execute(query);
+    }
+
+    private static void createLogicalVolumeIfNotExist(Session session, String name) {
+        StringBuilder sb = new StringBuilder("CREATE TABLE IF NOT EXISTS ")
+            .append(name).append("(")
+            .append("pid uuid PRIMARY KEY, ")
+            .append("photo blob);");
+
+        String query = sb.toString();
+        session.execute(query);
     }
 }
 
