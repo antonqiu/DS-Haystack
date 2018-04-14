@@ -2,14 +2,19 @@ package com.cmu.ds.haystacks;
 
 import com.cmu.ds.haystacks.config.HSConfig;
 import com.cmu.ds.haystacks.config.HSConfigParser;
+import com.datastax.driver.core.BoundStatement;
 import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.PreparedStatement;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
+import java.nio.ByteBuffer;
 import org.rapidoid.config.Conf;
+import org.rapidoid.http.MediaType;
+import org.rapidoid.http.Resp;
 import org.rapidoid.setup.App;
 import org.rapidoid.setup.On;
-import redis.clients.jedis.Jedis;
+import redis.clients.jedis.BinaryJedis;
 
 
 public class Main {
@@ -28,7 +33,7 @@ public class Main {
 
         // connect to the local redis: currently we define the redis only as our cache of directory
         // TODO: decide how to use redis to handle the recovery
-        Jedis jedisClient = new Jedis("127.0.0.1");
+        BinaryJedis jedisClient = new BinaryJedis("127.0.0.1");
         System.out.println("Connection to redis server");
 
         // connnect to the cassandra
@@ -49,6 +54,7 @@ public class Main {
 
         // Second: get: http://<dns>/get?mid=<mid>&lvid=<lvid>?pid=<pid>
         On.get("/get").managed(false).cacheTTL(6000).plain((req) -> {
+            Resp res = req.response();
             // get the pid
             String mid = req.param("mid", "");
             String lvid = req.param("lvid", "");
@@ -59,31 +65,29 @@ public class Main {
 
             // first ask redis to get the info
             // redis store the image as string
-            String imageString = jedisClient.get(pid);
+            byte[] imageString = jedisClient.get(pid.getBytes());
             if (imageString != null) {
                 // if hit cache, return the image object
-                return ImageUtils.decodeToImage(imageString);
+                return res.contentType(MediaType.IMAGE_ANY).body(imageString);
             } else {
                 // if not hit, first query to the directory
-                // TODO: how cassandra store? different lvid as different table?
-                String resImageString = "";
-                String query = "SELECT * FROM photo WHERE pid='" + pid + "'";
-                ResultSet results = session.execute(query);
-                if (results == null) {
-                    return "error";
-                }
-                for (Row row : results) {
-                    resImageString = row.getString("image_string");
+                PreparedStatement ps = session.prepare("SELECT * FROM :table WHERE pid= :pid");
+                BoundStatement bound = ps.bind()
+                    .setString("table", "lv" + lvid)
+                    .setString("pid", pid);
+                ByteBuffer imageBuffer;
+                ResultSet results = session.execute(bound);
+                Row row = results.one();
+                if (row == null) {
+                  return res.code(404);
                 }
 
-                if (resImageString.equals("")) {
-                    return "no results";
-                }
+                imageBuffer = row.getBytes("image");
 
                 // update the redis
-                jedisClient.set(pid, resImageString);
+                jedisClient.set(pid.getBytes(), imageBuffer.array());
                 System.out.println("Cache updated");
-                return ImageUtils.decodeToImage(resImageString);
+                return res.contentType(MediaType.IMAGE_ANY).body(imageBuffer);
             }
         });
 
@@ -95,7 +99,7 @@ public class Main {
             String pid = req.param("pid", "");
 
             // send to the redis to delete the cache
-            jedisClient.del(pid);
+            jedisClient.del(pid.getBytes());
 
             // send to the directory to delete the file
             String searchQuery = "SELECT pid, cache_url, mid, lvid FROM photo WHERE pid = '" + pid + "'";
@@ -117,10 +121,10 @@ public class Main {
     private static void initCassandraStores(Session session, int storeReplicationFactor,
         int numLogicalVolumes) {
         createKeyspaceIfNotExist(session, "store", "SimpleStrategy", storeReplicationFactor);
+        session.execute("USE store");
         for (int i = numLogicalVolumes; i > 0; i--) {
             createLogicalVolumeIfNotExist(session, "lv" + i);
         }
-        session.execute("USE store");
     }
 
     private static void createKeyspaceIfNotExist(Session session,
@@ -140,7 +144,7 @@ public class Main {
         StringBuilder sb = new StringBuilder("CREATE TABLE IF NOT EXISTS ")
             .append(name).append("(")
             .append("pid uuid PRIMARY KEY, ")
-            .append("photo blob);");
+            .append("image blob);");
 
         String query = sb.toString();
         session.execute(query);
