@@ -44,11 +44,15 @@ public class Main {
 
         // connect to the local redis: currently we define the redis only as our cache of directory
         // TODO: decide how to use redis to handle the recovery
-        jedisClient = new Jedis("127.0.0.1");
+        jedisClient = new Jedis("127.0.0.1", config.getDirectoryCacheRedisPort());
 
         // connnect to the cassandra
         // TODO: hard code or not? it is a question
-        dirCluster = Cluster.builder().addContactPoint("127.0.0.1").build(); // just for test, it should be changed to the ip of directory server
+        dirCluster = Cluster.builder()
+            .withClusterName("directory")
+            .addContactPoint(config.getDirectroyAddress())
+            .withPort(config.getDirectoryPort())
+            .build();
         session = dirCluster.connect("directory"); // connect to the directory keyspace
 
         // First: parse the uploaded image: http://<dns>/upload/<multipart-file>

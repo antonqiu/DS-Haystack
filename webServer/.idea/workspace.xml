@@ -2,14 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" readonly="true" id="dfd321a2-cee5-4a2c-b97b-c566d2dbf6da" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cmu/ds/haystacks/config/HSConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cmu/ds/haystacks/config/HSConfigParser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../cacheSever/src/main/java/com/cmu/ds/haystacks/config/HSConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../cacheSever/src/main/java/com/cmu/ds/haystacks/config/HSConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../config/config.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../config/config.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/cmu/ds/haystacks/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cmu/ds/haystacks/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webServer.iml" beforeDir="false" afterPath="$PROJECT_DIR$/webServer.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/cmu/ds/haystacks/config/HSConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cmu/ds/haystacks/config/HSConfig.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -24,7 +21,7 @@
       <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="901">
+            <state relative-caret-position="795">
               <caret line="53" column="14" selection-start-line="53" selection-start-column="14" selection-end-line="53" selection-end-column="14" />
             </state>
           </provider>
@@ -33,8 +30,8 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/cmu/ds/haystacks/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="39" selection-start-line="39" selection-end-line="39" />
+            <state relative-caret-position="408">
+              <caret line="47" lean-forward="true" selection-start-line="47" selection-end-line="47" />
               <folding>
                 <element signature="e#4474#4484#0" expanded="true" />
               </folding>
@@ -45,9 +42,11 @@
       <file leaf-file-name="HSConfig.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/cmu/ds/haystacks/config/HSConfig.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="179">
-              <caret line="11" lean-forward="true" selection-end-line="94" />
+            <state relative-caret-position="289">
+              <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
               <folding>
+                <element signature="e#869#870#0" expanded="true" />
+                <element signature="e#911#912#0" expanded="true" />
                 <element signature="e#772#773#0" expanded="true" />
                 <element signature="e#805#806#0" expanded="true" />
                 <element signature="e#952#953#0" expanded="true" />
@@ -57,15 +56,6 @@
                 <element signature="e#1124#1125#0" expanded="true" />
                 <element signature="e#1164#1165#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="config.yaml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../config/config.yaml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="19" column="26" selection-start-line="19" selection-end-line="19" selection-end-column="26" />
             </state>
           </provider>
         </entry>
@@ -90,9 +80,9 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/cmu/ds/haystacks/App.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/cmu/ds/haystacks/config/HSConfigParser.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/cmu/ds/haystacks/Main.java" />
         <option value="$PROJECT_DIR$/../config/config.yaml" />
         <option value="$PROJECT_DIR$/src/main/java/com/cmu/ds/haystacks/config/HSConfig.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/cmu/ds/haystacks/Main.java" />
       </list>
     </option>
   </component>
@@ -307,12 +297,12 @@
       <option name="presentableId" value="Default" />
       <updated>1523041143200</updated>
       <workItem from="1523041146341" duration="1165000" />
-      <workItem from="1523669700401" duration="2603000" />
+      <workItem from="1523669700401" duration="3428000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3768000" />
+    <option name="totallyTimeSpent" value="4593000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="1177" extended-state="6" />
@@ -373,13 +363,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="901">
-          <caret line="53" column="14" selection-start-line="53" selection-start-column="14" selection-end-line="53" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/cmu/ds/haystacks/config/HSConfigParser.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -411,28 +394,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../config/config.yaml">
+    <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="26" selection-start-line="19" selection-end-line="19" selection-end-column="26" />
+        <state relative-caret-position="795">
+          <caret line="53" column="14" selection-start-line="53" selection-start-column="14" selection-end-line="53" selection-end-column="14" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/cmu/ds/haystacks/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="39" selection-start-line="39" selection-end-line="39" />
+        <state relative-caret-position="408">
+          <caret line="47" lean-forward="true" selection-start-line="47" selection-end-line="47" />
           <folding>
             <element signature="e#4474#4484#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../config/config.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="20" column="26" selection-start-line="20" selection-end-line="20" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/cmu/ds/haystacks/config/HSConfig.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="179">
-          <caret line="11" lean-forward="true" selection-end-line="94" />
+        <state relative-caret-position="289">
+          <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
           <folding>
+            <element signature="e#869#870#0" expanded="true" />
+            <element signature="e#911#912#0" expanded="true" />
             <element signature="e#772#773#0" expanded="true" />
             <element signature="e#805#806#0" expanded="true" />
             <element signature="e#952#953#0" expanded="true" />

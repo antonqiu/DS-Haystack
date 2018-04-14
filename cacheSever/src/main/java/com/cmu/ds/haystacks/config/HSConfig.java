@@ -28,6 +28,17 @@ public class HSConfig {
   @JsonProperty("directory_cache_redis_port")
   private int directoryCacheRedisPort;
 
+  @JsonProperty("object_store_cache_redis_port")
+  private int objectStoreCacheRedisPort;
+
+  public int getObjectStoreCacheRedisPort() {
+    return objectStoreCacheRedisPort;
+  }
+
+  public void setObjectStoreCacheRedisPort(int objectStoreCacheRedisPort) {
+    this.objectStoreCacheRedisPort = objectStoreCacheRedisPort;
+  }
+
   public String getDirectroyAddress() {
     return directroyAddress;
   }
