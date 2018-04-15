@@ -8,6 +8,7 @@ import com.datastax.driver.core.PreparedStatement;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
+import java.io.File;
 import java.nio.ByteBuffer;
 import org.rapidoid.config.Conf;
 import org.rapidoid.http.MediaType;
@@ -33,7 +34,8 @@ public class Main {
 
         // connect to the local redis: currently we define the redis only as our cache of directory
         // TODO: decide how to use redis to handle the recovery
-        BinaryJedis jedisClient = new BinaryJedis("127.0.0.1");
+        int objectStoreCacheRedisPort = config.getObjectStoreCacheRedisPort();
+        BinaryJedis jedisClient = new BinaryJedis("127.0.0.1", objectStoreCacheRedisPort);
         System.out.println("Connection to redis server");
 
         // connnect to the cassandra
@@ -53,14 +55,13 @@ public class Main {
         initCassandraStores(session, storeReplicationFactor, storeNumberLogicalVolumes);
 
         // Second: get: http://<dns>/get?mid=<mid>&lvid=<lvid>?pid=<pid>
-        On.get("/get").managed(false).cacheTTL(6000).plain((req) -> {
+        On.get("/get").managed(false).cacheTTL(6000).serve((req) -> {
             Resp res = req.response();
             // get the pid
-            String mid = req.param("mid", "");
             String lvid = req.param("lvid", "");
             String pid = req.param("pid", "");
-            if (mid.equals("") || lvid.equals("") || pid.equals("")) {
-                return "error";
+            if (lvid.equals("") || pid.equals("")) {
+                return res.code(400).result("error");
             }
 
             // first ask redis to get the info
@@ -68,12 +69,12 @@ public class Main {
             byte[] imageString = jedisClient.get(pid.getBytes());
             if (imageString != null) {
                 // if hit cache, return the image object
-                return res.contentType(MediaType.IMAGE_ANY).body(imageString);
+                return res.contentType(MediaType.IMAGE_ANY).filename(pid).binary(imageString).done();
             } else {
                 // if not hit, first query to the directory
-                PreparedStatement ps = session.prepare("SELECT * FROM :table WHERE pid= :pid");
+                PreparedStatement ps = session.prepare("SELECT * FROM lv" + lvid + " WHERE pid= "
+                    + ":pid");
                 BoundStatement bound = ps.bind()
-                    .setString("table", "lv" + lvid)
                     .setString("pid", pid);
                 ByteBuffer imageBuffer;
                 ResultSet results = session.execute(bound);
@@ -86,8 +87,11 @@ public class Main {
 
                 // update the redis
                 jedisClient.set(pid.getBytes(), imageBuffer.array());
+
                 System.out.println("Cache updated");
-                return res.contentType(MediaType.IMAGE_ANY).body(imageBuffer);
+                return res.contentType(MediaType.IMAGE_ANY).filename(pid).binary
+                    (imageBuffer)
+                    .done();
             }
         });
 
