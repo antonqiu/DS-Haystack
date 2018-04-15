@@ -27,7 +27,6 @@ public class Main {
     public static void main(String[] args) throws Exception {
         // parse haystack configuration
         config = HSConfigParser.parse("../config/config.yaml");
-
         App.run(args);
         Conf.HTTP.set("maxPipeline", 128);
         Conf.HTTP.set("timeout", 0);
@@ -97,7 +96,6 @@ public class Main {
 
 
         // Third: delete: http://<dns>/delete?pid=<pid>
-
         On.get("/delete").managed(false).cacheTTL(6000).plain((req) -> {
             // get the pid
             String pid = req.param("pid", "");
@@ -106,7 +104,7 @@ public class Main {
             jedisClient.del(pid.getBytes());
 
             // send to the directory to delete the file
-            String searchQuery = "SELECT pid, cache_url, mid, lvid FROM photo WHERE pid = '" + pid + "'";
+            String searchQuery = "SELECT pid, cache_url, lvid FROM photo WHERE pid = '" + pid + "'";
             ResultSet r = session.execute(searchQuery);
 
             if (!r.iterator().hasNext() || r.iterator().next() == null) {

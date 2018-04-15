@@ -93,14 +93,11 @@ public class Main {
 
             String query = "SELECT * FROM photo_info WHERE pid='" + pid + "'";
             ResultSet results = dirSession.execute(query);
-            if (results == null) {
-                return res.code(404).redirect("PID does not exist.");
-            }
 
             Row row = results.one();
 
             if (row == null) {
-                return res.code(404).redirect("PID does not exist.");
+                return res.code(404).result("PID does not exist.");
             }
 
             resPid = row.getString("pid");
@@ -185,15 +182,15 @@ public class Main {
         jedisClient.del(pid);
 
         // send to the directory to delete the file
-        String searchQuery = "SELECT pid, cache_url, lvid FROM photo WHERE pid = '" + pid + "'";
+        String searchQuery = "SELECT pid, cache_url, lvid FROM photo_info WHERE pid = '" + pid +
+            "';";
         ResultSet r = dirSession.execute(searchQuery);
-
-        if (!r.iterator().hasNext() || r.iterator().next() == null) {
+        Row row = r.one();
+        if (row == null) {
             // if there is no such photo
             return res.code(404).result("No such image.");
         } else {
-            Row row = r.iterator().next();
-            String delQuery = "DELETE FROM photo WHERE pid = '" + row.getString("pid") + "'";
+            String delQuery = "DELETE FROM photo_info WHERE pid = '" + row.getString("pid") + "';";
             dirSession.execute(delQuery);
             return res.code(200).result("Image deleted.");
         }
