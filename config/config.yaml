@@ -14,7 +14,9 @@ store_replication_factor: 2
 
 object_cache_addresses:
   - unix5.andrew.cmu.edu
-  - unix6.andrew.cmu.edu
+#  - unix6.andrew.cmu.edu
+
+object_cache_port: 8081
 
 directory_address: unix4.andrew.cmu.edu
 directory_port: 9043

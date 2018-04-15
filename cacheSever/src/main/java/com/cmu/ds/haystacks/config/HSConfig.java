@@ -31,6 +31,17 @@ public class HSConfig {
   @JsonProperty("object_store_cache_redis_port")
   private int objectStoreCacheRedisPort;
 
+  @JsonProperty("object_cache_port")
+  private int objectCachePort;
+
+  public int getObjectCachePort() {
+    return objectCachePort;
+  }
+
+  public void setObjectCachePort(int objectCachePort) {
+    this.objectCachePort = objectCachePort;
+  }
+
   public int getObjectStoreCacheRedisPort() {
     return objectStoreCacheRedisPort;
   }

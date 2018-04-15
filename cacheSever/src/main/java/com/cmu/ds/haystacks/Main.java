@@ -143,7 +143,7 @@ public class Main {
     private static void createLogicalVolumeIfNotExist(Session session, String name) {
         StringBuilder sb = new StringBuilder("CREATE TABLE IF NOT EXISTS ")
             .append(name).append("(")
-            .append("pid uuid PRIMARY KEY, ")
+            .append("pid text PRIMARY KEY, ")
             .append("image blob);");
 
         String query = sb.toString();
