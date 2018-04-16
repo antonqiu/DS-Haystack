@@ -39,6 +39,7 @@ public class Main {
         App.run(args);
         Conf.HTTP.set("maxPipeline", 128);
         Conf.HTTP.set("timeout", 0);
+        On.port(config.getObjectWebServerPort());
 
         // connect to the local redis: currently we define the redis only as our cache of directory
         // TODO: decide how to use redis to handle the recovery
