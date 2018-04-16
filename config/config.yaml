@@ -21,3 +21,7 @@ object_cache_port: 8081
 directory_address: unix4.andrew.cmu.edu
 directory_port: 9043
 directory_cache_redis_port: 6380
+
+# port for web server
+web_server_port: 9876
+cache_server_port: 9876
