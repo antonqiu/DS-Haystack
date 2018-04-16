@@ -34,6 +34,9 @@ public class HSConfig {
   @JsonProperty("object_cache_port")
   private int objectCachePort;
 
+  @JsonProperty("web_server_port")
+  private int objectWebServerPort;
+
   public int getObjectCachePort() {
     return objectCachePort;
   }
@@ -69,6 +72,8 @@ public class HSConfig {
   public int getDirectoryCacheRedisPort() {
     return directoryCacheRedisPort;
   }
+
+  public int getObjectWebServerPort() { return objectWebServerPort; }
 
   public void setDirectoryCacheRedisPort(int directoryCacheRedisPort) {
     this.directoryCacheRedisPort = directoryCacheRedisPort;
@@ -112,5 +117,9 @@ public class HSConfig {
 
   public void setObjectCacheAddresses(String[] objectCacheAddresses) {
     this.objectCacheAddresses = objectCacheAddresses;
+  }
+
+  public void setObjectWebServerPort(int objectWebServerPort) {
+    this.objectWebServerPort = objectWebServerPort;
   }
 }

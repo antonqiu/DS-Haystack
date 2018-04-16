@@ -4,7 +4,7 @@ object_store_addresses:
 
 # Only changing the port for cassandra is not enough.
 # port in cassandra.yaml has to be changed as well.
-object_store_port: 9347
+object_store_port: 9346
 object_store_cache_redis_port: 6380
 
 num_logical_volumes: 2
@@ -17,7 +17,7 @@ object_cache_addresses:
 #  - unix6.andrew.cmu.edu
 
 directory_address: unix4.andrew.cmu.edu
-directory_port: 9347
+directory_port: 9346
 directory_cache_redis_port: 6380
 
 # port for web server
