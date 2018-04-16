@@ -1,2 +1,2 @@
 mvn clean package
-java -cp target/web_server.jar Main
+nohup java -cp target/web_server.jar com.cmu.ds.haystacks.Main &

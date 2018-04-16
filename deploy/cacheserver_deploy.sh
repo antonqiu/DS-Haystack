@@ -9,10 +9,10 @@ do
 	cd /dev/shm
 
 	# create folder
-	echo "create foler <14736asdf> for this test"
-	rm -rf 14736asdf > /dev/null
-	mkdir 14736asdf
-	cd 14736asdf
+	echo "create foler <14736anton> for this test"
+	rm -rf 14736anton > /dev/null
+	mkdir 14736anton
+	cd 14736anton
 
 	# install redis
 	echo "install redis on the target machine"
@@ -31,10 +31,10 @@ do
 	# wget the web server package and uncompress
 	echo "download the file package and uncompress"
 	cd ../../
-	wget "https://s3.amazonaws.com/14736team/caheServer.tar.gz"
-	tar xzf caheServer.tar.gz > /dev/null
-	cd cacheSever 
-	nohup ./deploy.sh &
+	wget "https://s3.amazonaws.com/14736team/cacheServer.tar.gz"
+	tar xzf cacheServer.tar.gz > /dev/null
+	cd cacheServer 
+	nohup ./deploy.sh > /dev/null &
 
 eeooff
 	echo done!
