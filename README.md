@@ -1,11 +1,12 @@
 # 14736-project3
--Haystacks project for 14736 distributed system
+- Haystacks project for 14736 distributed system
+- Reference Paper: https://research.fb.com/publications/finding-a-needle-in-haystack-facebooks-photo-storage/
 
 ## Description
-###Overview
-Data objects: image
+### Overview
+A scalable photo storage.
 
-###Workflow
+### Workflow
 1. **Client:** There are three kinds of reuqests for operating the image objects: GET, UPLOAD, DELETE; for simplicity, we did not implement any user interface for this project, the requests are sent directly to the reverse proxy server. 
 2. **Proxy Server[unix.andrew machine + Nginx]:** The reverse proxy server sends the request to one front-end web server. 
 3. **Web Server[unix.andrew machine + Rapidoid(Java)]:** The web servers are purely http web servers.
@@ -16,8 +17,8 @@ Data objects: image
 6. Cache server return the photo from cache or from stores.
 
 ## Implementation
-###Proxy Server:
+### Proxy Server:
 We applied Nginx to deal with the requests forwarding and load balancing. Our main work here is installing Nginx on unix.andrew machine. Please check the implementation and configuration details in the "proxyServer" directory.
 
-###Web Server:
+### Web Server:
 We used the Rapidoid framework to implement the http web server. Please check the implementation and configuration details in the "webServer" directory.
