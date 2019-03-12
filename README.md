@@ -1,12 +1,12 @@
-# 14736-project3
+# Scalable Photo Storage Design
+
+## Overview
 - Haystacks project for 14736 distributed system
 - Reference Paper: https://research.fb.com/publications/finding-a-needle-in-haystack-facebooks-photo-storage/
 
-## Description
-### Overview
-A scalable photo storage.
+## Workflow
+![architecture diagram](https://github.com/antonqiu/DS-Haystack/raw/master/arch.jpeg)
 
-### Workflow
 1. **Client:** There are three kinds of reuqests for operating the image objects: GET, UPLOAD, DELETE; for simplicity, we did not implement any user interface for this project, the requests are sent directly to the reverse proxy server. 
 2. **Proxy Server[unix.andrew machine + Nginx]:** The reverse proxy server sends the request to one front-end web server. 
 3. **Web Server[unix.andrew machine + Rapidoid(Java)]:** The web servers are purely http web servers.
